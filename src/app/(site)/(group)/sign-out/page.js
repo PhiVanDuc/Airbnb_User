@@ -33,7 +33,7 @@ export default function SignOutPage() {
                     width={300}
                     height={300}
                     alt="Logo"
-                    src="/logo.png"
+                    src="/Logo.png"
                     className="w-[200px] mb-[100px]"
                     priority={ true }
                 />

@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 
 import { decode_token, refresh_token } from "@/actions/token";
-import { redirect } from "next/navigation"
+import { redirect } from "next/navigation";
 
 const refresh_access_token = async (client = false) => {
     const accessToken = cookies().get("access-user")?.value;

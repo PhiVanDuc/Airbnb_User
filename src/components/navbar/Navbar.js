@@ -30,7 +30,7 @@ export default function Navbar({ categories }) {
                         alt="Logo"
                         width={100}
                         height={100}
-                        src="/logo.png"
+                        src="/Logo.png"
                         onClick={() => { window.location.href = process.env.NEXT_PUBLIC_DOMAIN_WEB; }}
                         className="cursor-pointer hidden md:inline w-[80px] lg:w-[100px] object-contain"
                         priority={ true }

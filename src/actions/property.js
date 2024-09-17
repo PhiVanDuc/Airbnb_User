@@ -1,20 +1,14 @@
 "use server"
 
 import { revalidateTag } from "next/cache";
-import { cookies } from "next/headers";
-
 import refresh_access_token from "./ReuseTasks/token/refresh_access_token";
 
-export const get_properties_action = async () => {
-    try {
-        const refresh = await refresh_access_token();
-        if (refresh === 401) return 401;
-        const { exp, decode: { decode }, accessToken } = refresh;
-        
+export const get_properties_action = async (token) => {
+    try {        
         const response = await fetch(`${process.env.API_SERVER}/property/get_properties`, {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${accessToken}`,
+                "Authorization": `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
@@ -28,12 +22,7 @@ export const get_properties_action = async () => {
         if (response.status === 401) return 401;
 
         const result = await response.json();
-        return {
-            result,
-            exp,
-            decode,
-            accessToken
-        }
+        return result;
     }
     catch(error) {
         console.log(error);
@@ -48,7 +37,6 @@ export const get_properties_action = async () => {
 export const get_property_action = async (body) => {
     try {
         const refresh = await refresh_access_token();
-        if (refresh === 401) return 401;
         const { exp, decode: { decode }, accessToken } = refresh;
 
         const response = await fetch(`${process.env.API_SERVER}/property/get_property`, {
@@ -86,7 +74,6 @@ export const get_property_action = async (body) => {
 export const get_proprety_step_action = async (body) => {
     try {
         const refresh = await refresh_access_token();
-        if (refresh === 401) return 401;
         const { exp, decode: { decode }, accessToken } = refresh;
 
         const response = await fetch(`${process.env.API_SERVER}/property/get_property_step`, {
@@ -118,14 +105,12 @@ export const get_proprety_step_action = async (body) => {
     }
 }
 
-export const create_property_action = async (body) => {
+export const create_property_action = async (body, token) => {
     try {
-        const access_token = cookies().get("access-user").value;
-
         const response = await fetch(`${process.env.API_SERVER}/property/create_property`, {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${access_token}`,
+                "Authorization": `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({...body}),
