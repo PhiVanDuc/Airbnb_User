@@ -1,0 +1,1 @@
+export const interest_rate = (money) => Math.ceil(money + (money * (15/100)))
