@@ -3,7 +3,7 @@
 import { revalidateTag } from "next/cache";
 import refresh_access_token from "./ReuseTasks/token/refresh_access_token";
 
-export const get_properties_action = async (token) => {
+export const get_properties_action = async (token, decode) => {
     try {        
         const response = await fetch(`${process.env.API_SERVER}/property/get_properties`, {
             method: "POST",
@@ -12,7 +12,7 @@ export const get_properties_action = async (token) => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                user_id: decode.user_id
+                user_id: decode?.decode?.user_id
             }),
             next: {
                 tags: ["get_properties"]

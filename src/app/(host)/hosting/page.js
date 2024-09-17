@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useTokenContext } from "@/context/TokenProvider";
 
 import Image from "next/image";
@@ -14,26 +15,25 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-// import WrapperModifyStuff from "@/components/WrapperModifyStuff";
+import { Skeleton } from "@/components/ui/skeleton";
 
 import { get_properties_action } from "@/actions/property";
 import clientRefresh from "@/utils/clientRefresh";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 export default function HostingPage() {
     const router = useRouter();
-    const [properties, setProperties] = useState({});
+    const [properties, setProperties] = useState(null);
     const { setTokens } = useTokenContext();
 
     useEffect(() => {
         (async () => {
-            const refresh = clientRefresh({
+            const refresh = await clientRefresh({
                 router,
                 setTokens
             });
 
-            const properties = await get_properties_action(refresh?.accessToken);
+            const properties = await get_properties_action(refresh?.accessToken, refresh?.decode);
             if (properties === 401) {
                 router.push("/sign-out");
                 return;
@@ -56,11 +56,23 @@ export default function HostingPage() {
             </div>
 
             {
-                (properties?.success && properties?.resultGet.length > 0) &&
+                !properties && (
+                    <div className="mt-[50px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-flow-row gap-[15px]">
+                        <Skeleton className="w-full aspect-square rounded-[10px] bg-slate-300"  />
+                        <Skeleton className="w-full aspect-square rounded-[10px] bg-slate-300"  />
+                        <Skeleton className="w-full aspect-square rounded-[10px] bg-slate-300"  />
+                        <Skeleton className="w-full aspect-square rounded-[10px] bg-slate-300"  />
+                        <Skeleton className="w-full aspect-square rounded-[10px] bg-slate-300"  />
+                    </div>
+                )
+            }
+
+            {
+                (properties && properties?.success && properties?.resultGet.length > 0) &&
                 (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-flow-row gap-[15px]">
                         {
-                            result.resultGet.map((property, index) => {
+                            properties.resultGet.map((property, index) => {
                                 return (
                                     <Dialog key={property.id}>
                                         <DialogTrigger>
@@ -151,7 +163,7 @@ export default function HostingPage() {
             }
 
             {
-                (properties?.success && properties?.resultGet?.length === 0) && 
+                (properties && properties?.success && properties?.resultGet?.length === 0) && 
                 (
                     <div className="flex items-center justify-center py-[40px] rounded-[10px] w-full bg-neutral-100">
                         <div className="flex flex-col items-center justify-center gap-y-[15px]">
@@ -163,12 +175,12 @@ export default function HostingPage() {
             }
 
             {
-                !properties?.success && 
+                (properties && !properties?.success) && 
                 (
                     <div className="flex items-center justify-center py-[40px] rounded-[10px] w-full bg-neutral-100">
                         <div className="flex flex-col items-center justify-center gap-y-[15px]">
                             <TbDeviceIpadX size={30} />
-                            <p className="max-w-[320px] text-center">{ result?.result?.message }</p>
+                            <p className="max-w-[320px] text-center">{ properties?.message }</p>
                         </div>
                     </div>
                 )
