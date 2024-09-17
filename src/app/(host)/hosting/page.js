@@ -14,7 +14,7 @@ import { get_properties_action } from "@/actions/property";
 import { redirect } from "next/navigation";
 import ButtonProperty from "./components/ButtonProperty";
 
-export default async function ListingPage() {
+export default async function HostingPage() {
     const properties = await get_properties_action();
     if (properties === 401) redirect("/sign-out");
 
