@@ -42,7 +42,7 @@ export default async function PaymentSuccessPage({ searchParams }) {
                                     width={80}
                                     height={80}
                                     alt="Logo"
-                                    src="/logo.png"    
+                                    src="/Logo.png"    
                                     priority={true}                   
                                 />
                             </div>
