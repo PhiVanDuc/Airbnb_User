@@ -14,7 +14,7 @@ import { toast } from "sonner";
 
 import { IoClose } from "react-icons/io5";
 
-const MapProperties = ({ mapbox_access_token, open, category_id }) => {
+const MapProperties = ({ mapbox_access_token, open, setOpen, category_id }) => {
     const router = useRouter();
 
     const [viewPort, setViewPort] = useState({
@@ -127,7 +127,10 @@ const MapProperties = ({ mapbox_access_token, open, category_id }) => {
                             className="border-none rounded-[10px] overflow-hidden p-0 cursor-pointer"
                         >
                             <div
-                                onClick={() => { router.push(`/property/${selectedProperty?.id}`) }}
+                                onClick={() => {
+                                    setOpen(false);
+                                    router.push(`/property/${selectedProperty?.id}`);
+                                }}
                             >
                                 <div className="relative">
                                     <Image
