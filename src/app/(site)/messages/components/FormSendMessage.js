@@ -36,6 +36,7 @@ export default function FormSendMessage({ conversation }) {
     const { allTokens, setTokens } = useTokenContext();
     const { listMessages, setListMessages } = useMessagesContext();
     const [infoUser, setInfoUser] = useState();
+    const [loading, setLoading] = useState(false);
     
     const form = useForm({
         defaultValues: {
@@ -58,6 +59,7 @@ export default function FormSendMessage({ conversation }) {
     const onSubmit = async (values) => {
         const { message, image } = values;
 
+        setLoading(true);
         if ((message || image) && conversation_id && partner_id && infoUser?.id) {
             const refresh = await clientRefresh({
                 router,
@@ -94,6 +96,7 @@ export default function FormSendMessage({ conversation }) {
             )
 
             form.reset();
+            setLoading(false);
         }
     }
 
@@ -137,6 +140,7 @@ export default function FormSendMessage({ conversation }) {
                                                             className="w-full rounded-[10px] border-neutral-300"
                                                             placeholder="Enter your message"
                                                             { ...field }
+                                                            disabled={loading}
                                                         />
                                                     </FormControl>
                                                 </FormItem>
@@ -149,11 +153,12 @@ export default function FormSendMessage({ conversation }) {
 
                         <button
                             type="submit"
-                            disabled={form.getValues("message") ? false : true}
+                            disabled={(form.getValues("message") ? false : true) || loading}
                         >
                             <RiSendPlaneFill size={25} className={cn(
                                 "shrink-0 cursor-pointer",
-                                form.getValues("message") ? "text-rootColor" : "cursor-not-allowed"
+                                form.getValues("message") ? "text-rootColor" : "cursor-not-allowed",
+                                loading ? "cursor-not-allowed" : ""
                             )} />
                         </button>
                     </div>

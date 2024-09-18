@@ -49,6 +49,7 @@ export default function Photos({ result }) {
         })() || [],
         temp: [],
     });
+    const [pending, setPending] = useState(false);
 
     const { setStepContext } = useContext(StepContext);
     const { setTokens } = useContext(TokenContext);
@@ -63,6 +64,8 @@ export default function Photos({ result }) {
 
     useEffect(() => {
         (async () => {
+            setPending(true);
+
             if (!isOpenWidget && urlImages?.temp?.length > 0) {
                 const refresh = await clientRefresh({
                     router,
@@ -88,6 +91,8 @@ export default function Photos({ result }) {
                     toast.success(add?.message);
                 }
             }
+
+            setPending(false);
         })();
     }, [isOpenWidget]);
 
@@ -138,6 +143,8 @@ export default function Photos({ result }) {
     const handleSelectItem = async (data) => {
         const { imageInfo, index, action } = data;
         const { image_url, image_cover } = imageInfo;
+
+        setPending(true);
 
         const refresh = await clientRefresh({
             router,
@@ -209,6 +216,8 @@ export default function Photos({ result }) {
                 toast.success(deleteResult?.message);
             }
         }
+
+        setPending(false);
     }
 
     return (
@@ -256,6 +265,11 @@ export default function Photos({ result }) {
                                                         <DropdownMenuItem
                                                             className="px-[20px] py-[10px] text-[15px] cursor-pointer"
                                                             onSelect={() => {
+                                                                if (pending) {
+                                                                    toast.warning("Images is loading, please wait.");
+                                                                    return;
+                                                                }
+
                                                                 handleSelectItem({
                                                                     imageInfo: url,
                                                                     index,
@@ -269,6 +283,11 @@ export default function Photos({ result }) {
                                                         <DropdownMenuItem
                                                             className="px-[20px] py-[10px] text-[15px] cursor-pointer"
                                                             onSelect={() => {
+                                                                if (pending) {
+                                                                    toast.warning("Images is loading, please wait.");
+                                                                    return;
+                                                                }
+
                                                                 handleSelectItem({
                                                                     imageInfo: url,
                                                                     index,

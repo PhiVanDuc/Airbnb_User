@@ -7,6 +7,7 @@ import StripeComponent from "./components/StripeComponent";
 import { decrypt } from "@/lib/jwt";
 import { displayDateFunc } from "@/utils/calcDate";
 import Image from "next/image";
+import WrapperModifyStuff from "@/components/WrapperModifyStuff";
 
 export default async function BookPage({ searchParams }) {
     const { info } = searchParams;

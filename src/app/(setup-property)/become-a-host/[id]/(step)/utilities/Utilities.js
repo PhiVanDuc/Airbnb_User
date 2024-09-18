@@ -52,7 +52,7 @@ export default function Utilities({ pickData, result }) {
                         <div className="space-y-[15px]">
                             <h3 className="text-[16px] lg:text-[18px] font-medium">What about these guest favorites?</h3>
 
-                            <div className="grid lg:grid-cols-3">
+                            <div className="grid lg:grid-cols-3 gap-[15px]">
                                 {pickData?.utilities?.filter(utility => utility?.utility_type === "favorite")?.map(utility => (
                                     <FormField
                                         key={utility?.id}
@@ -93,7 +93,7 @@ export default function Utilities({ pickData, result }) {
                         <div className="space-y-[15px]">
                             <h3 className="text-[16px] lg:text-[18px] font-medium">Do you have any standout utilities?</h3>
 
-                            <div className="grid lg:grid-cols-3">
+                            <div className="grid lg:grid-cols-3 gap-[15px]">
                                 {pickData?.utilities?.filter(utility => utility?.utility_type === "standout")?.map(utility => (
                                     <FormField
                                         key={utility?.id}
@@ -134,7 +134,7 @@ export default function Utilities({ pickData, result }) {
                         <div className="space-y-[15px]">
                             <h3 className="text-[16px] lg:text-[18px] font-medium">Do you have any of these safety items?</h3>
 
-                            <div className="grid lg:grid-cols-3">
+                            <div className="grid lg:grid-cols-3 gap-[15px]">
                                 {pickData?.utilities?.filter(utility => utility?.utility_type === "safety")?.map(utility => (
                                     <FormField
                                         key={utility?.id}
